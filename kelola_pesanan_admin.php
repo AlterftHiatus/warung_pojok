@@ -2,13 +2,22 @@
 session_start();
 include 'koneksi.php';
 
-// Ambil semua pesanan dari tabel orders
-$sql = "SELECT * FROM orders ORDER BY order_date DESC";
+// Cek apakah admin sudah login
+if (!isset($_SESSION['admin_id']) || $_SESSION['role'] !== 'admin') {
+    header("Location: login.php");
+    exit();
+}
+
+
+// Ambil semua pesanan dengan status diproses
+$sql = "SELECT * FROM orders WHERE status = 'diproses' ORDER BY order_date DESC";
 $orders = mysqli_query($conn, $sql);
+
 ?>
 
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -27,26 +36,26 @@ $orders = mysqli_query($conn, $sql);
             --text: #34495e;
             --border: #bdc3c7;
         }
-        
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
             font-family: 'Poppins', sans-serif;
             background-color: #f5f7fa;
             color: var(--text);
             line-height: 1.6;
         }
-        
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
         }
-        
+
         .header {
             display: flex;
             justify-content: space-between;
@@ -55,7 +64,7 @@ $orders = mysqli_query($conn, $sql);
             flex-wrap: wrap;
             gap: 15px;
         }
-        
+
         .page-title {
             color: var(--primary);
             font-weight: 600;
@@ -64,7 +73,7 @@ $orders = mysqli_query($conn, $sql);
             align-items: center;
             gap: 10px;
         }
-        
+
         .btn {
             display: inline-flex;
             align-items: center;
@@ -78,27 +87,27 @@ $orders = mysqli_query($conn, $sql);
             cursor: pointer;
             font-size: 14px;
         }
-        
+
         .btn-outline {
             background: transparent;
             border: 1px solid var(--border);
             color: var(--text);
         }
-        
+
         .btn-outline:hover {
             background: var(--light);
         }
-        
+
         .btn-primary {
             background: var(--accent);
             color: white;
         }
-        
+
         .btn-primary:hover {
             background: #2980b9;
             transform: translateY(-2px);
         }
-        
+
         .order-card {
             background: white;
             border-radius: 10px;
@@ -106,7 +115,7 @@ $orders = mysqli_query($conn, $sql);
             margin-bottom: 20px;
             overflow: hidden;
         }
-        
+
         .order-header {
             background: var(--light);
             padding: 15px 20px;
@@ -117,16 +126,16 @@ $orders = mysqli_query($conn, $sql);
             flex-wrap: wrap;
             gap: 10px;
         }
-        
+
         .order-id {
             font-weight: 600;
             color: var(--primary);
         }
-        
+
         .customer-name {
             font-weight: 500;
         }
-        
+
         .order-status {
             padding: 5px 12px;
             border-radius: 20px;
@@ -134,65 +143,65 @@ $orders = mysqli_query($conn, $sql);
             font-weight: 500;
             text-transform: uppercase;
         }
-        
+
         .status-pending {
             background: rgba(243, 156, 18, 0.1);
             color: var(--warning);
         }
-        
+
         .status-diproses {
             background: rgba(52, 152, 219, 0.1);
             color: var(--accent);
         }
-        
+
         .status-selesai {
             background: rgba(39, 174, 96, 0.1);
             color: var(--success);
         }
-        
+
         .status-dibatalkan {
             background: rgba(231, 76, 60, 0.1);
             color: var(--secondary);
         }
-        
+
         .order-body {
             padding: 20px;
         }
-        
+
         .order-meta {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             gap: 15px;
             margin-bottom: 20px;
         }
-        
+
         .meta-item {
             display: flex;
             flex-direction: column;
         }
-        
+
         .meta-label {
             font-size: 13px;
             color: var(--text);
             opacity: 0.8;
             margin-bottom: 3px;
         }
-        
+
         .meta-value {
             font-weight: 500;
         }
-        
+
         .price {
             color: var(--success);
             font-weight: 600;
         }
-        
+
         .items-table {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 20px;
         }
-        
+
         .items-table th {
             background: var(--light);
             padding: 12px 15px;
@@ -200,23 +209,23 @@ $orders = mysqli_query($conn, $sql);
             font-weight: 500;
             font-size: 14px;
         }
-        
+
         .items-table td {
             padding: 12px 15px;
             border-bottom: 1px solid var(--border);
         }
-        
+
         .items-table tr:last-child td {
             border-bottom: none;
         }
-        
+
         .status-form {
             display: flex;
             gap: 10px;
             margin-top: 20px;
             flex-wrap: wrap;
         }
-        
+
         .form-select {
             padding: 10px 15px;
             border: 1px solid var(--border);
@@ -224,7 +233,7 @@ $orders = mysqli_query($conn, $sql);
             font-family: inherit;
             min-width: 180px;
         }
-        
+
         .empty-state {
             text-align: center;
             padding: 40px 20px;
@@ -232,28 +241,28 @@ $orders = mysqli_query($conn, $sql);
             border-radius: 10px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
         }
-        
+
         .empty-icon {
             font-size: 50px;
             color: var(--border);
             margin-bottom: 15px;
         }
-        
+
         .empty-text {
             color: var(--text);
             opacity: 0.7;
         }
-        
+
         @media (max-width: 768px) {
             .order-header {
                 flex-direction: column;
                 align-items: flex-start;
             }
-            
+
             .order-meta {
                 grid-template-columns: 1fr;
             }
-            
+
             .items-table {
                 display: block;
                 overflow-x: auto;
@@ -261,6 +270,7 @@ $orders = mysqli_query($conn, $sql);
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="header">
@@ -271,14 +281,14 @@ $orders = mysqli_query($conn, $sql);
                 <i class="fas fa-arrow-left"></i> Kembali ke Dashboard
             </a>
         </div>
-        
+
         <?php if (mysqli_num_rows($orders) > 0): ?>
             <?php while ($order = mysqli_fetch_assoc($orders)): ?>
-                <?php 
+                <?php
                 $order_id = $order['id'];
                 $status_class = 'status-' . $order['status'];
                 ?>
-                
+
                 <div class="order-card">
                     <div class="order-header">
                         <div>
@@ -288,7 +298,7 @@ $orders = mysqli_query($conn, $sql);
                         </div>
                         <span class="order-status <?= $status_class ?>"><?= $order['status'] ?></span>
                     </div>
-                    
+
                     <div class="order-body">
                         <div class="order-meta">
                             <div class="meta-item">
@@ -308,7 +318,7 @@ $orders = mysqli_query($conn, $sql);
                                 <span class="meta-value"><?= date('d M Y H:i', strtotime($order['order_date'])) ?></span>
                             </div>
                         </div>
-                        
+
                         <h5 style="margin-bottom: 15px; font-size: 16px;">Rincian Pesanan:</h5>
                         <table class="items-table">
                             <thead>
@@ -324,25 +334,26 @@ $orders = mysqli_query($conn, $sql);
                                 $items = mysqli_query($conn, "SELECT * FROM order_items WHERE order_id = $order_id");
                                 while ($item = mysqli_fetch_assoc($items)):
                                 ?>
-                                <tr>
-                                    <td><?= htmlspecialchars($item['nama_menu']) ?></td>
-                                    <td>Rp <?= number_format($item['harga'], 0, ',', '.') ?></td>
-                                    <td><?= $item['quantity'] ?></td>
-                                    <td>Rp <?= number_format($item['subtotal'], 0, ',', '.') ?></td>
-                                </tr>
+                                    <tr>
+                                        <td><?= htmlspecialchars($item['nama_menu']) ?></td>
+                                        <td>Rp <?= number_format($item['harga'], 0, ',', '.') ?></td>
+                                        <td><?= $item['quantity'] ?></td>
+                                        <td>Rp <?= number_format($item['subtotal'], 0, ',', '.') ?></td>
+                                    </tr>
                                 <?php endwhile; ?>
                             </tbody>
                         </table>
-                        
+
                         <form method="post" action="update_status.php" class="status-form">
                             <input type="hidden" name="order_id" value="<?= $order_id ?>">
                             <select name="status" class="form-select">
-                                <?php foreach (['pending' => 'Pending', 'diproses' => 'Diproses', 'selesai' => 'Selesai', 'dibatalkan' => 'Dibatalkan'] as $value => $label): ?>
+                                <?php foreach (['diproses' => 'Diproses', 'selesai' => 'Selesai', 'dibatalkan' => 'Dibatalkan'] as $value => $label): ?>
                                     <option value="<?= $value ?>" <?= $value == $order['status'] ? 'selected' : '' ?>>
                                         <?= $label ?>
                                     </option>
                                 <?php endforeach; ?>
                             </select>
+
                             <button type="submit" class="btn btn-primary">
                                 <i class="fas fa-sync-alt"></i> Update Status
                             </button>
@@ -361,4 +372,5 @@ $orders = mysqli_query($conn, $sql);
         <?php endif; ?>
     </div>
 </body>
+
 </html>

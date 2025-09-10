@@ -133,10 +133,10 @@ $total = 0;
 <nav class="navbar navbar-expand-lg navbar-dark mb-4">
     <div class="container">
         <div class="navbar-nav ml-auto flex-row">
-            <a href="index.php" class="nav-item nav-link mr-3">Home</a>
+            <!-- <a href="index.php" class="nav-item nav-link mr-3">Home</a> -->
             <a href="daftar_menu.php" class="nav-item nav-link mr-3">Menu</a>
             <a href="keranjang.php" class="nav-item nav-link mr-3">Keranjang</a>
-            <a href="logout_admin.php" class="nav-item nav-link">Logout</a>
+            <!-- <a href="logout_admin.php" class="nav-item nav-link">Logout</a> -->
         </div>
     </div>
 </nav>
@@ -241,14 +241,14 @@ $total = 0;
                         </div>
                         <div class="form-group col-md-6">
                             <label for="nomor_meja"><i class="fas fa-chair"></i> Nomor Meja</label>
-                            <input type="text" name="nomor_meja" class="form-control" id="nomor_meja" required>
+                            <input type="number" name="nomor_meja" class="form-control" id="nomor_meja" required>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="pembayaran"><i class="fas fa-money-bill-wave"></i> Metode Pembayaran</label>
                         <select name="metode_pembayaran" class="form-control" id="pembayaran" onchange="toggleQRIS()" required>
                             <option value="tunai">Tunai</option>
-                            <option value="qris">QRIS</option>
+                            <!-- <option value="qris">QRIS</option> -->
                         </select>
                     </div>
                     <div class="form-group text-center mt-3" id="qrisContainer" style="display: none;">

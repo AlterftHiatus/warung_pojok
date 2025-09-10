@@ -26,7 +26,7 @@ foreach ($_SESSION['keranjang'] as $item) {
 $kode_pesanan = 'WP' . time();
 
 // Simpan ke tabel orders 
-$stmt = $conn->prepare("INSERT INTO orders (kode_pesanan, nama_pelanggan, total, status, metode_pembayaran, nomor_meja) VALUES (?, ?, ?, 'pending', ?, ?)");
+$stmt = $conn->prepare("INSERT INTO orders (kode_pesanan, nama_pelanggan, total, status, metode_pembayaran, nomor_meja) VALUES (?, ?, ?, 'diproses', ?, ?)");
 $stmt->bind_param("sssss", $kode_pesanan, $nama_pelanggan, $total, $metode_pembayaran, $nomor_meja);
 $stmt->execute();
 

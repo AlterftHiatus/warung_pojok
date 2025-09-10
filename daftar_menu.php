@@ -287,7 +287,7 @@ while ($menu = mysqli_fetch_assoc($result)) {
         <h1 class="display-4 font-weight-bold">WARUNG <span>POJOK</span></h1>
         <hr class="my-4 bg-light" />
         <p class="lead font-weight-bold">
-        Silahkan Pesan Menu Sesuai Keinginan Anda<br />
+        Silakan Pesan Menu Sesuai Keinginan Anda<br />
         Enjoy Your Meal
         </p>
     </div>
@@ -312,7 +312,7 @@ while ($menu = mysqli_fetch_assoc($result)) {
         <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
             <li class="nav-item">
-            <a class="nav-link" href="index.php"><i class="fas fa-home mr-1"></i> Home</a>
+            <!-- <a class="nav-link" href="index.php"><i class="fas fa-home mr-1"></i> Home</a> -->
             </li>
             <li class="nav-item">
             <a class="nav-link active" href="daftar_menu.php"><i class="fas fa-utensils mr-1"></i> Menu</a>
@@ -320,9 +320,9 @@ while ($menu = mysqli_fetch_assoc($result)) {
             <li class="nav-item">
             <a class="nav-link" href="keranjang.php"><i class="fas fa-shopping-cart mr-1"></i> Keranjang</a>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
             <a class="nav-link" href="logout_admin.php"><i class="fas fa-sign-out-alt mr-1"></i> Logout</a>
-            </li>
+            </li> -->
         </ul>
         </div>
     </div>

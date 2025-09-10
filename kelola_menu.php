@@ -2,6 +2,13 @@
 session_start();
 include 'koneksi.php';
 
+// Cek apakah admin sudah login
+if (!isset($_SESSION['admin_id']) || $_SESSION['role'] !== 'admin') {
+    header("Location: login.php");
+    exit();
+}
+
+
 if (isset($_GET['hapus'])) {
     $id = (int)$_GET['hapus'];
     if ($id > 0) {

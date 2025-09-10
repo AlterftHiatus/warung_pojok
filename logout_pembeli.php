@@ -16,7 +16,7 @@ unset($_SESSION['pesanan']);
   <body>
     <div class="container mt-5 text-center">
       <h1>Pesanan Berhasil Dibuat!</h1>
-      <p>Terima kasih telah memesan. Silakan keluar untuk mengakhiri sesi Anda.</p>
+      <p>Terima kasih telah memesan. Silakan duduk manis dan tunggu pesanan datang:)</p>
       <a href="index.php" class="btn btn-danger mt-3">Keluar</a>
     </div>
   </body>

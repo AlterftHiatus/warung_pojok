@@ -212,9 +212,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <button type="submit" class="btn btn-primary">Login</button>
             </form>
             
-            <div class="text-center mt-3">
+            <!-- <div class="text-center mt-3">
                 <p>Belum punya akun? <a href="register.php" class="register-link">Daftar sebagai admin</a></p>
-            </div>
+            </div> -->
         </div>
     </div>
 
