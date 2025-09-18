@@ -265,7 +265,7 @@ $menus = mysqli_query($conn, "SELECT * FROM menu ORDER BY id DESC");
                     <th>Nama Menu</th>
                     <th>Harga</th>
                     <th>Kategori</th>
-                    <th>Stok</th>
+                    <!-- <th>Stok</th> -->
                     <th>Status</th>
                     <th>Aksi</th>
                 </tr>
@@ -276,7 +276,7 @@ $menus = mysqli_query($conn, "SELECT * FROM menu ORDER BY id DESC");
                     <td><?= htmlspecialchars($menu['nama_menu']) ?></td>
                     <td class="price">Rp <?= number_format($menu['harga'], 0, ',', '.') ?></td>
                     <td><?= htmlspecialchars($menu['kategori']) ?></td>
-                    <td><?= $menu['stok'] ?></td>
+                    <!-- <td><?= $menu['stok'] ?></td> -->
                     <td>
                         <span class="badge <?= $menu['tersedia'] ? 'badge-success' : 'badge-danger' ?>">
                             <?= $menu['tersedia'] ? 'Tersedia' : 'Habis' ?>
