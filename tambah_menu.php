@@ -8,10 +8,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $kategori = $_POST['kategori'];
     $deskripsi = $_POST['deskripsi'];
     $tersedia = isset($_POST['tersedia']) ? 1 : 0;
-    $stok = $_POST['stok'];
 
-    $stmt = $conn->prepare("INSERT INTO menu (nama_menu, harga, kategori, deskripsi, tersedia, stok) VALUES (?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("sdssii", $nama_menu, $harga, $kategori, $deskripsi, $tersedia, $stok);
+    $stmt = $conn->prepare("INSERT INTO menu (nama_menu, harga, kategori, deskripsi, tersedia) VALUES (?, ?, ?, ?, ?)");
+    $stmt->bind_param("sdssi", $nama_menu, $harga, $kategori, $deskripsi, $tersedia);
     $stmt->execute();
 
     header("Location: kelola_menu.php");
@@ -48,14 +47,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <option value="Minuman">Minuman</option>
                 </select>
             </div>
-
             <div class="mb-3">
                 <label for="deskripsi" class="form-label">Deskripsi</label>
                 <textarea class="form-control" name="deskripsi" id="deskripsi"></textarea>
-            </div>
-            <div class="mb-3">
-                <label for="stok" class="form-label">Stok</label>
-                <input type="number" class="form-control" name="stok" id="stok" required>
             </div>
             <div class="form-check mb-3">
                 <input class="form-check-input" type="checkbox" name="tersedia" id="tersedia" checked>

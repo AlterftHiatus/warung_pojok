@@ -39,7 +39,7 @@ $order_id = $stmt->insert_id;
 
 // Simpan item ke order_items dan update stok menu
 foreach ($_SESSION['keranjang'] as $item) {
-    $menu_id = (int)$item['id'];  
+    $menu_id = (int)$item['id'];
     $nama_menu = isset($item['nama_menu']) ? $item['nama_menu'] : '';
     $harga = isset($item['harga']) ? (float)$item['harga'] : 0;
     $jumlah = isset($item['jumlah']) ? (int)$item['jumlah'] : 1;
@@ -56,7 +56,11 @@ foreach ($_SESSION['keranjang'] as $item) {
     }
 
     // Kurangi stok menu jika field tersedia bertipe INT
-    $conn->query("UPDATE menu SET tersedia = GREATEST(tersedia - $jumlah, 0) WHERE id = $menu_id");
+    // $conn->query("UPDATE menu SET tersedia = GREATEST(tersedia - $jumlah, 0) WHERE id = $menu_id");
+
+    // $stmt_update = $conn->prepare("UPDATE menu SET stok = GREATEST(stok - ?, 0) WHERE id = ?");
+    // $stmt_update->bind_param("ii", $jumlah, $menu_id);
+    // $stmt_update->execute();
 }
 
 // Bersihkan keranjang
@@ -65,4 +69,3 @@ unset($_SESSION['keranjang']);
 // Redirect ke nota
 header("Location: nota.php?order_id=$order_id");
 exit;
-?>
